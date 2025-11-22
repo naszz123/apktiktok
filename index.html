@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>TikTok Coins Recharge — Final (with Music)</title>
+<title>TikTok Coins Recharge</title>
 <style>
   :root{
     --accent:#ff2a5f;
@@ -188,23 +188,14 @@
     <h3>Musik</h3>
 
     <div class="music-controls">
-      <button id="bgPlayBtn">Play BG</button>
-      <button id="bgPauseBtn" style="display:none">Pause BG</button>
+      <button id="bgPlayBtn"></button>
+      <button id="bgPauseBtn" style="display:none"></button>
     </div>
 
     <div class="music-list">
-      <button class="song-btn" onclick="playSong('https://files.catbox.moe/d7vvgz.mp3')">🎵 Fireflies</button>
-      <button class="song-btn" onclick="playSong('https://files.catbox.moe/unbo27.mp3')">🎵 Tie me down</button>
-      <button class="song-btn" onclick="playSong('https://files.catbox.moe/8smnze.mp3')">🎵 DJ 8 Letters</button>
+      <button class="song-btn" onclick="playSong('https://files.catbox.moe/61ybj2.m4a')">🎵 Habibi Come To Dubai</button>
     </div>
   </div>
-
-  <!-- audio elements -->
-  <audio id="bgAudio" loop preload="none">
-    <source src="https://files.catbox.moe/wq3mjq.mp3" type="audio/mpeg">
-    <!-- fallback -->
-  </audio>
-  <audio id="audioPlayer" preload="none"></audio>
 
 <script>
 /* ====== Music popup & player (clean unified) ====== */
@@ -256,9 +247,37 @@ pkgEls.forEach(p=>{
   p.addEventListener('click', ()=>{
     pkgEls.forEach(x=>x.classList.remove('active'));
     p.classList.add('active');
-    selectedPackage = { coins: p.dataset.coins, price: p.dataset.price };
+
+    // Jika custom package
+    if (p.dataset.coins === "custom") {
+      const input = prompt("Masukkan jumlah coins yang kamu inginkan:");
+
+      if (!input || isNaN(input) || Number(input) <= 0) {
+        alert("Masukkan angka yang valid!");
+        p.classList.remove('active');
+        selectedPackage = null;
+        return;
+      }
+
+      selectedPackage = {
+        coins: input,
+        price: "Custom"
+      };
+
+      // Ubah tampilan card menjadi sesuai input user
+      p.querySelector(".package-amount").innerText = input;
+      p.querySelector(".package-price").innerText = "$ -";
+    }
+    else {
+      // Paket normal
+      selectedPackage = { 
+        coins: p.dataset.coins, 
+        price: p.dataset.price 
+      };
+    }
   });
 });
+
 
 const rechargeBtn = document.getElementById('rechargeBtn');
 const loadingPopup = document.getElementById('loadingPopup');
@@ -320,5 +339,5 @@ document.addEventListener('keydown', (e)=>{
 
 <footer style="text-align:center; margin:28px 0 8px 0; color:#888; font-size:13px;">© Powered By Tiktok Indonesia</footer>
 </body>
-        </html>
-        
+  </html>
+  
